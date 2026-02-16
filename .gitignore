@@ -1,0 +1,12 @@
+# Cartella di compilazione (la più importante da ignorare)
+/target
+
+# File generati da Cargo
+Cargo.lock
+
+# File di log e temporanei
+**/*.rs.bk
+*.log
+
+# Cartelle specifiche di VS Code
+.vscode/
