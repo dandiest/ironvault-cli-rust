@@ -13,6 +13,10 @@ struct VaultEntry {
 }
 
 fn main() {
+    let mut entries: Vec<VaultEntry> = match fs::read_to_string("data.json") {
+        Ok(content) => serde_json::from_str(&content).unwrap_or_else(|_| Vec::new()),
+        Err(_) => Vec::new(),
+    };
     let new_expense = VaultEntry {
         id: 1,
         description: "Proteine".to_string(),
@@ -22,8 +26,9 @@ fn main() {
         is_completed: true,
     };
 
-    let json = serde_json::to_string_pretty(&new_expense).unwrap();
+    entries.push(new_expense);
+    let json_ready = serde_json::to_string_pretty(&entries).unwrap();
+    fs::write("data.json", &json_ready).expect("Impossible file writing.");
 
-    fs::write("data.json", &json).expect("Impossibile writing the file.");
-    println!("Successfully saved your data in data.json!");
+    println!("Database updated. Total: {}", entries.len());
 }
